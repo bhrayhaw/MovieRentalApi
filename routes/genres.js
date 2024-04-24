@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../middleware/authmiddleware');
+const admin = require('../middleware/rolemiddleware');
 const router = express.Router();
 const {Genres, validateGenres} = require('../models/genre');
 const {Movie, validateMovie} = require('../models/movie');
@@ -57,7 +58,7 @@ router.put('/:id', async (request, response) => {
 	response.send(genre);
 });
 
-router.delete('/:id', (request, response) => {
+router.delete('/:id',[auth, admin], (request, response) => {
 	const genre = Genres.findByIdAndRemove(request.params.id);
 	if(!genre) return response.status(404).send('Selected genre for deletion not found');
 
