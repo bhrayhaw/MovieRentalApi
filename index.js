@@ -1,4 +1,7 @@
 require('express-async-errors');
+const winston = require('winston');
+require('winston-mongodb');
+const error = require("./middleware/errormiddleware.js");
 const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -12,6 +15,8 @@ const users = require('./routes/users.js');
 const auth = require('./routes/auth.js');
 const app = express();
 const mongoose = require('mongoose');
+
+winston.
 
 if (!config.get('jwtKey')) {
   console.error('FATAL Error: jwtPrivateKey is not defined');
@@ -42,6 +47,7 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use(error)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
