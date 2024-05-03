@@ -5,10 +5,15 @@ const router = express.Router();
 const {Genres, validateGenres} = require('../models/genre');
 const {Movie, validateMovie} = require('../models/movie');
 
-router.get('/', async(request, response) => {
-	const genres = await Genres.find();
-	response.send(genres);
-})
+router.get('/', async(request, response, next) => {
+	try {
+		throw new Error("Could not find genres")
+		const genres = await Genres.find();
+		response.send(genres);
+	} catch (error) {
+		next(error);
+	}
+});
 
 router.get('/:id', async(request, response) => {
 	const genre = await Genres.findById(request.params.id);
