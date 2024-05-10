@@ -1,8 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-router.get('/', (request, response) => {
-	response.render('index',{title: "Vidly", message: "Hello, Welcome to Vidly"});
+router.get("/", (request, response) => {
+  response.render("index", {
+    title: "Vidly",
+    message: "Hello, Welcome to Vidly",
+  });
 });
 
 module.exports = router;

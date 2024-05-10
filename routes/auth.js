@@ -5,6 +5,40 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const {User} = require('../models/user');
 
+/**
+ * @swagger
+ * /api/auth/:
+ *  post:
+ *    summary: Authenticate user
+ *    tags:
+ *      - Authentication
+ *    produces:
+ *      - application/json
+ *    requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *    responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: JWT token
+ *       400:
+ *         description: Invalid email or password
+ */
 router.post('/', async(request, response) => {
     const {error} = authenticateUser(request.body);
     if (error) { return response.status(400).send(error.details[0].message); }
@@ -21,8 +55,8 @@ router.post('/', async(request, response) => {
     const token = user.getAuthToken()
 
     response.header('x-auth-token', token).send(token);
+});
 
-})
 
 function authenticateUser(user){
     const schema = Joi.object({
